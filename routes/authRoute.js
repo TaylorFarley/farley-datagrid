@@ -27,14 +27,15 @@ router.post("/register", async(req, res) => {
 
 router.post("/tokenIsValid", async (req, res) => {
   try {
-    const token = req.header("auth-token");
-    if (!token) return res.json(false);
+    const token = req.header("x-auth-token");
+    console.log(token)
+    if (!token) return res.send('bad token');
 
     const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (!verified) return res.json(false);
+    if (!verified) return res.send('not verified');
 
     const user = await User.findById(verified.id);
-    if (!user) return res.json(false);
+    if (!user) return res.send('bad id');
 
     let userInfo = {
       _id: user._id,

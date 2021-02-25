@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios'
+import UserContext from "../Context/UserContext";
 function Copyright() {
 
 
@@ -54,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Signup() {
   const classes = useStyles();
   const [newUserData, setnewUserData] = useState({});
-    
+  const { realUser, setRealUser } = useContext(UserContext);
   const changeHandler = (e) => {
       setnewUserData((prevState) => ({
         ...prevState,
@@ -80,6 +81,7 @@ export default function Signup() {
             lastName: loginResponse.data.user.lastName,
             email: loginResponse.data.user.email,             
           });
+          setRealUser(newUserData)
           console.log(newUserData)
         }).catch((error) => {
         console.log(error);
