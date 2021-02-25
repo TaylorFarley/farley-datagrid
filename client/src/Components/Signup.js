@@ -61,14 +61,31 @@ export default function Signup() {
         [e.target.name]: e.target.value,
       }));
     };
-
     const submitUserSignup=(e)=>{
         e.preventDefault()
-        console.log(newUserData)
+      
         axios
       .post("/auth/register/", newUserData)
-      .then((res) => {
-        console.log(res)
+      .then((res) => {        
+        let login = {
+          email: newUserData.email,
+          password: newUserData.password,
+        };
+        axios.post("/auth/login/", login).then((loginResponse) => {
+          localStorage.setItem("auth-token", loginResponse.data.token);
+          console.log(loginResponse.data.user)
+          setnewUserData({
+            ...newUserData,
+            firstName: loginResponse.data.user.firstName,
+            lastName: loginResponse.data.user.lastName,
+            email: loginResponse.data.user.email,             
+          });
+          console.log(newUserData)
+        }).catch((error) => {
+        console.log(error);
+      });
+
+        
       })
     }
   return (

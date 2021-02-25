@@ -24,6 +24,62 @@ router.post("/register", async(req, res) => {
 
 });
 
+
+router.post("/tokenIsValid", async (req, res) => {
+  try {
+    const token = req.header("auth-token");
+    if (!token) return res.json(false);
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (!verified) return res.json(false);
+
+    const user = await User.findById(verified.id);
+    if (!user) return res.json(false);
+
+    let userInfo = {
+      _id: user._id,
+     firstName: user.firstName,
+     lastName: user.lastName,
+      email: user.email,
+    };
+    return res.json(userInfo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // validate
+   
+    const user = await User.findOne({ email: email });
+    if (!user) console.log("user not found");
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) console.log("invalid username/password");
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    const userInfo = await User.findById(user._id);
+    console.log(userInfo)
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        email: userInfo.email,       
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.post("/", (req, res) => {
   res.send("root");
 });
