@@ -6,9 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var authRoute = require('./routes/authRoute');
-
+var mongoose = require('mongoose');
 var app = express();
-
+var mongoDB = process.env.DB;
   
 var cors = require('cors')
 
@@ -27,7 +27,11 @@ app.use('/auth', authRoute);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
+//DB SETUP
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+.then(()=>{console.log('Connected to our DB')});
+var db = mongoose.connection;
+//DB SETUP
 
 if(process.env.PORT){
   app.use(express.static(path.join(__dirname, "client/build")));
