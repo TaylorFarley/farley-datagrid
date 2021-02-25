@@ -1,9 +1,18 @@
 
 import './App.css';
 import Signup from './Components/Signup'
+import Login from './Components/Login'
+import Home from './Components/Home'
 import UserContext from "./Context/UserContext";
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 function App() {
 
 
@@ -30,10 +39,22 @@ function App() {
   return (
 
     <div className="App">
-        <UserContext.Provider value={{ realUser, setRealUser }}>
-          {realUser.email?(<>Hi {realUser.firstName}</>):<Signup />}
+      
+      <Router>
+      <UserContext.Provider value={{ realUser, setRealUser }}><Switch>
+          <Route path="/login">
+          {realUser.email?<Home />:<Login />}
+          </Route>       
+          <Route path="/">
+          {realUser.email?<Home />:<Signup />}
+          </Route>
+        </Switch>
+        </UserContext.Provider>
+        </Router>   
+
+     
  
-      </UserContext.Provider>
+    
     </div>
   );
 }

@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Signup() {
+export default function Login() {
   const classes = useStyles();
   const [newUserData, setnewUserData] = useState({});
   const { realUser, setRealUser } = useContext(UserContext);
@@ -65,30 +65,23 @@ export default function Signup() {
     const submitUserSignup=(e)=>{
         e.preventDefault()
       
-        axios
-      .post("/auth/register/", newUserData)
-      .then((res) => {        
+
+   
         let login = {
           email: newUserData.email,
           password: newUserData.password,
         };
         axios.post("/auth/login/", login).then((loginResponse) => {
-          localStorage.setItem("auth-token", loginResponse.data.token);
-          console.log(loginResponse.data.user)
-          setnewUserData({
-            ...newUserData,
-            firstName: loginResponse.data.user.firstName,
-            lastName: loginResponse.data.user.lastName,
-            email: loginResponse.data.user.email,             
-          });
-          setRealUser(newUserData)
-          console.log(newUserData)
+          localStorage.setItem("auth-token", loginResponse.data.token);        
+          setRealUser(loginResponse.data.user)
+
+          
         }).catch((error) => {
         console.log(error);
       });
 
         
-      })
+
     }
   return (
     <Container component="main" maxWidth="xs">
@@ -98,35 +91,10 @@ export default function Signup() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+         Log In
         </Typography>
         <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                onChange={changeHandler}
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                onChange={changeHandler}
-                autoComplete="lname"
-              />
-            </Grid>
+          <Grid container spacing={2}>            
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -166,8 +134,8 @@ export default function Signup() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
+              <Link href="/" variant="body2">
+               Need to register?
               </Link>
             </Grid>
           </Grid>
