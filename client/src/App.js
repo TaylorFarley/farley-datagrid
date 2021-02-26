@@ -2,7 +2,8 @@
 import './App.css';
 import Signup from './Components/Signup'
 import Login from './Components/Login'
-import Home from './Components/Home'
+import Home from './Components/Titles'
+import FullWidthTabs from './Components/Tabs'
 import UserContext from "./Context/UserContext";
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
@@ -43,10 +44,10 @@ function App() {
       <Router>
       <UserContext.Provider value={{ realUser, setRealUser }}><Switch>
           <Route path="/login">
-          {realUser.email?<Home />:<Login />}
+          {realUser.email?<FullWidthTabs />:<Login />}
           </Route>       
           <Route path="/">
-          {realUser.email?<Home />:<Signup />}
+          {realUser.email?<FullWidthTabs />:<Signup />}
           </Route>
         </Switch>
         </UserContext.Provider>
