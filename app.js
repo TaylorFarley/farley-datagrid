@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var authRoute = require('./routes/authRoute');
+var dataRoute = require('./routes/dataRoute');
 var mongoose = require('mongoose');
 var app = express();
 var mongoDB = process.env.DB;
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRoute);
+app.use('/data', dataRoute)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
