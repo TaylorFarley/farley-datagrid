@@ -1,15 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Titles from './Titles'
-import Dnd from './Dnd'
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
+import SwipeableViews from "react-swipeable-views";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Titles from "./Titles";
+import Dnd from "./Dnd";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import UserContext from "../Context/UserContext";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,7 +40,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 
@@ -54,6 +55,7 @@ export default function FullWidthTabs() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const { realUser, setRealUser } = useContext(UserContext);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -61,6 +63,11 @@ export default function FullWidthTabs() {
 
   const handleChangeIndex = (index) => {
     setValue(index);
+  };
+
+  const logOutHandler = () => {
+    localStorage.setItem("auth-token", "");
+    setRealUser({ email: false, firstName: null, lastName: null });
   };
 
   return (
@@ -75,12 +82,13 @@ export default function FullWidthTabs() {
           aria-label="full width tabs example"
         >
           <Tab label="Titles" {...a11yProps(0)} />
-          <Tab label="Resources" {...a11yProps(1)} />
+          <Tab label="Load File" {...a11yProps(1)} />
           <Tab label="Admin" {...a11yProps(2)} disabled />
+          <Tab label="Profile" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
       >
@@ -92,6 +100,11 @@ export default function FullWidthTabs() {
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           Item Three
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          <Button variant="contained" color="secondary" onClick={logOutHandler}>
+            Log Out
+          </Button>
         </TabPanel>
       </SwipeableViews>
     </div>

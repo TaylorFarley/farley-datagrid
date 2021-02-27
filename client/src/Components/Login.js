@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react';
+import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -53,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+  let history = useHistory();
   const classes = useStyles();
   const [newUserData, setnewUserData] = useState({});
   const { realUser, setRealUser } = useContext(UserContext);
@@ -74,6 +76,8 @@ export default function Login() {
         axios.post("/auth/login/", login).then((loginResponse) => {
           localStorage.setItem("auth-token", loginResponse.data.token);        
           setRealUser(loginResponse.data.user)
+        
+          history.push("/");
 
           
         }).catch((error) => {

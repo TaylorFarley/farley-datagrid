@@ -38,8 +38,8 @@ const Titles = () => {
 
   return (
     <div>
-      <h1>Titles</h1>
-      {realUser.email ? <>Hi {realUser.firstName}</> : null}
+   
+      {realUser.email ? <h1>{realUser.firstName.charAt(0).toUpperCase()+ realUser.firstName.slice(1)}'s Titles</h1> : null}
       <DataSheetGrid data={data} onChange={setData} columns={columns} />
     </div>
   );
