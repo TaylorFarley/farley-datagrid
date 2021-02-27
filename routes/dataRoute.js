@@ -6,16 +6,11 @@ let mongoose = require("mongoose");
 
 router.post("/dataAdd", async(req, res) => {
     
-    let { title, log, org } = req.body;
-
-    
-    // const salt = await bcrypt.genSalt(10);
-    // const passwordHash = await bcrypt.hash(password, salt);
+    let { title, log, org } = req.body;  
     const newData = new Data({
       title,
       log,
-      org,
-    //   password: passwordHash,  
+      org, 
     });
     const savedData = await newData.save();
     res.send(savedData);

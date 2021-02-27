@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.18",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "react-csv-reader": "^3.3.0"
   }
 }
