@@ -5,7 +5,9 @@ import Login from './Components/Login'
 import Home from './Components/Titles'
 import FullWidthTabs from './Components/Tabs'
 import UserContext from "./Context/UserContext";
+import Loading from './Components/Loading'
 import React, {useState, useEffect} from 'react'
+
 import axios from 'axios'
 import {
   BrowserRouter as Router,
@@ -25,18 +27,23 @@ function App() {
     lastName: null
   })
 
+  const [loading, setloading] = useState(false)
+
   useEffect(()=>{
+    setloading(true)
     let token = localStorage.getItem("auth-token");
+    if(!token)
+    setloading(false)
     axios.post('/auth/tokenIsValid',
     null,
     { headers: { "x-auth-token": token } })
     .then((res)=>{
-      console.log(res.data)
+     
       setRealUser(res.data)
-
+      setloading(false)
     })
   },[])
-  
+
   return (
 
     <div className="App">
@@ -44,11 +51,13 @@ function App() {
       <Router>
       <UserContext.Provider value={{ realUser, setRealUser }}><Switch>
           <Route path="/login">
-          {realUser.email?<FullWidthTabs />:<Login />}
+          {loading?(<Loading/>):(realUser.email?<FullWidthTabs />:<Login />)}
           </Route>       
           <Route path="/">
-          {realUser.email?<FullWidthTabs />:<Signup />}
+            {loading?(<Loading/>):(realUser.email?<FullWidthTabs />:<Signup />)}
+         
           </Route>
+          
         </Switch>
         </UserContext.Provider>
         </Router>   

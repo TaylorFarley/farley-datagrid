@@ -1,18 +1,23 @@
 import React, { useCallback, useState } from "react";
 import CSVReader from "react-csv-reader";
 
+
 export default function Dnd() {
     let [mydata, setmydata] = useState()
-    let fakedata
+   
   const handleForce = (data, fileInfo) => {
       console.log(data, fileInfo)
-    setmydata(data)
+       setmydata(data)
   };
+
+  //my stuff
 console.log(typeof mydata)
 if(mydata)
 mydata.slice(0,3).map((x)=>{
     console.log(x.page)
 })
+ //end of my stuff
+
   const papaparseOptions = {
     header: true,
     dynamicTyping: true,
