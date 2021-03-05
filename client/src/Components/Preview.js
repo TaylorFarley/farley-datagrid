@@ -7,7 +7,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-
+import Button from "@material-ui/core/Button";
+import axios from 'axios'
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -28,7 +29,16 @@ const rows = [
 
 export default function Preview(props) {
   const classes = useStyles();
-  console.log(props);
+  console.log(props.mydata);
+
+
+
+  const loadData=()=>{   
+  console.log(props.mydata)
+  axios.post('/data/dataAdd',props.mydata).then((x)=>{console.log(x)})
+  }
+
+
   return (
 
     <React.Fragment>
@@ -55,6 +65,7 @@ export default function Preview(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button onClick={loadData}>Load File Now</Button>
       </React.Fragment>
   );
 }

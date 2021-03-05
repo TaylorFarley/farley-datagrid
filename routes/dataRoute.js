@@ -5,15 +5,23 @@ const jwt = require("jsonwebtoken");
 let mongoose = require("mongoose");
 
 router.post("/dataAdd", async(req, res) => {
+ console.log(req.body)
+let result = req.body
+Data.insertMany(req.body).then(function(){ 
+  console.log("Data inserted")  // Success 
+}).catch(function(error){ 
+  console.log(error)      // Failure 
+}); 
+  res.send(result)
     
-    let { title, log, org } = req.body;  
-    const newData = new Data({
-      title,
-      log,
-      org, 
-    });
-    const savedData = await newData.save();
-    res.send(savedData);
+    // let { title, log, org } = req.body;  
+    // const newData = new Data({
+    //   title,
+    //   log,
+    //   org, 
+    // });
+    // const savedData = await newData.save();
+    // res.send(savedData);
 })
 
 router.post("/dataSend", async(req, res) => {

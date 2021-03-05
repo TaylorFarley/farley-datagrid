@@ -10,13 +10,7 @@ export default function Import() {
        setmydata(data)
   };
 
-  //my stuff
 
-if(mydata)
-mydata.slice(0,3).map((x)=>{
-    console.log(x.page)
-})
- //end of my stuff
 
   const papaparseOptions = {
     header: true,
