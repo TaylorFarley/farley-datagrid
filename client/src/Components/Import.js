@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import CSVReader from "react-csv-reader";
 
 
-export default function Dnd() {
+export default function Import() {
     let [mydata, setmydata] = useState()
    
   const handleForce = (data, fileInfo) => {
@@ -11,7 +11,7 @@ export default function Dnd() {
   };
 
   //my stuff
-console.log(typeof mydata)
+
 if(mydata)
 mydata.slice(0,3).map((x)=>{
     console.log(x.page)

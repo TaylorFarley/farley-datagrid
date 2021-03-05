@@ -31,17 +31,44 @@ function App() {
 
   useEffect(()=>{
     setloading(true)
-    let token = localStorage.getItem("auth-token");
-    if(!token)
-    setloading(false)
-    axios.post('/auth/tokenIsValid',
-    null,
-    { headers: { "x-auth-token": token } })
-    .then((res)=>{
-     
-      setRealUser(res.data)
-      setloading(false)
-    })
+    const checkLoggedIn = async () => {
+      
+      let token = localStorage.getItem("auth-token");
+      console.log(token)
+      if (token === null) {
+        localStorage.setItem("auth-token", "");
+        token = "";
+      }
+      const tokenRes = await axios.post(
+        "/auth/tokenIsValid",
+        null,
+        { headers: { "x-auth-token": token } }        
+      )     
+     console.log(tokenRes.data)
+     setRealUser(tokenRes.data)    
+     console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^')
+     setloading(false)    
+    };
+
+    checkLoggedIn();
+    // setloading(true)
+    // let token = localStorage.getItem("auth-token");
+    // console.log(token)
+    // if(!token)
+    // setloading(false)    
+    
+    // console.log('lets run this post')
+    // axios.post('/auth/tokenIsValid',
+    // null,
+    // { headers: { "x-auth-token": token } })
+    // .then((res)=>{
+    //  return console.log(res)
+    //   console.log('did anything come back')
+    //   setRealUser(res.data)
+    //   setloading(false)
+    //   console.log(realUser.email)
+    // })
+
   },[])
 
   return (

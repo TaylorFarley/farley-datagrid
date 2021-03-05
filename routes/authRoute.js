@@ -3,10 +3,13 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 let mongoose = require("mongoose");
+var express = require("express");
+var cors = require("cors");
+var app = express();
 
-router.post("/register", async(req, res) => {
+app.use(cors());
+router.post("/register", async (req, res) => {
   let { firstName, lastName, email, password } = req.body;
-
 
   const existingUser = await User.findOne({ email: email });
   if (existingUser) console.log("email exists");
@@ -16,38 +19,51 @@ router.post("/register", async(req, res) => {
     firstName,
     lastName,
     email,
-    password: passwordHash,  
+    password: passwordHash,
   });
   const savedUser = await newUser.save();
   res.send(savedUser);
-  
-
 });
 
-
-
 router.post("/tokenIsValid", async (req, res) => {
-  try {
-    const token = req.header("x-auth-token");
-    console.log(token)
-    if (!token) return res.send('bad token');
-
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (!verified) return res.send('not verified');
-
+  const token = req.header("x-auth-token");
+  if (token) {
+    let verified
+    try {
+      console.log(token);
+      verified = jwt.verify(token, process.env.JWT_SECRET);    
+    } catch (err) {
+      res.send(false);
+    }
     const user = await User.findById(verified.id);
-    if (!user) return res.send('bad id');
-
     let userInfo = {
       _id: user._id,
      firstName: user.firstName,
      lastName: user.lastName,
       email: user.email,
     };
-    return res.json(userInfo);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    res.json(userInfo);
+  } else res.send("no token");
+  // try {
+  //   const token = req.header("x-auth-token");
+  //   if (!token) return res.send('token is blank');
+
+  //   const verified = jwt.verify(token, process.env.JWT_SECRET);
+  //   if (!verified) return res.send('cant verify');
+
+  //   const user = await User.findById(verified.id);
+  //   if (!user) return res.send('cant find user');
+
+  //   let userInfo = {
+  //     _id: user._id,
+  //    firstName: user.firstName,
+  //    lastName: user.lastName,
+  //     email: user.email,
+  //   };
+  //   return res.json(userInfo);
+  // } catch (err) {
+  //   res.status(500).send( err.message);
+  // }
 });
 
 router.post("/login", async (req, res) => {
@@ -55,7 +71,7 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // validate
-   
+
     const user = await User.findOne({ email: email });
     if (!user) console.log("user not found");
 
@@ -63,16 +79,16 @@ router.post("/login", async (req, res) => {
     if (!isMatch) console.log("invalid username/password");
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "5m",
     });
 
     const userInfo = await User.findById(user._id);
-    console.log(userInfo)
+    console.log(userInfo);
     res.json({
       token,
       user: {
         id: user._id,
-        email: userInfo.email,       
+        email: userInfo.email,
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
       },
