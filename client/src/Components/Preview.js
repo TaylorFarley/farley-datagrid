@@ -31,7 +31,8 @@ export default function Preview(props) {
   console.log(props);
   return (
 
-   
+    <React.Fragment>
+        <h1>Preview</h1>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -54,6 +55,6 @@ export default function Preview(props) {
           </TableBody>
         </Table>
       </TableContainer>
-   
+      </React.Fragment>
   );
 }
