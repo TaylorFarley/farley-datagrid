@@ -67,24 +67,27 @@ router.post("/tokenIsValid", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+
+
   try {
-    const { email, password } = req.body;
 
     // validate
-
+    let { email, password } = req.body
+    console.log(email)
     const user = await User.findOne({ email: email });
-    if (!user) console.log("user not found");
+    if (!user) return res.send("user not found");
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) console.log("invalid username/password");
-
+    if (!isMatch) return res.send("invalid username/password");
+    
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "5m",
     });
+   
+    const userInfo = await User.findById(user._id);  
 
-    const userInfo = await User.findById(user._id);
-    console.log(userInfo);
-    res.json({
+    if(userInfo)
+    return res.json({
       token,
       user: {
         id: user._id,
@@ -93,6 +96,8 @@ router.post("/login", async (req, res) => {
         lastName: userInfo.lastName,
       },
     });
+    else
+    res.send('error')
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
