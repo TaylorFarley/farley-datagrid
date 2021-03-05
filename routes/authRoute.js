@@ -75,10 +75,10 @@ router.post("/login", async (req, res) => {
     let { email, password } = req.body
     console.log(email)
     const user = await User.findOne({ email: email });
-    if (!user) return res.send("user not found");
+    if (!user) return res.send("NoUser");
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.send("invalid username/password");
+    if (!isMatch) return res.send("Invalid");
     
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "5m",

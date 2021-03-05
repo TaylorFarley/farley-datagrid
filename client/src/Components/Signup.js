@@ -56,6 +56,7 @@ export default function Signup() {
   const classes = useStyles();
   const [newUserData, setnewUserData] = useState({});
   const { realUser, setRealUser } = useContext(UserContext);
+  console.log(realUser)
   const changeHandler = (e) => {
       setnewUserData((prevState) => ({
         ...prevState,

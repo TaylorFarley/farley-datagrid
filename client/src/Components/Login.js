@@ -52,8 +52,10 @@ export default function Login() {
   let history = useHistory();
   const classes = useStyles();
   const [newUserData, setnewUserData] = useState({});
+  const [Warnings, setWarnings] = useState('')
   const { realUser, setRealUser } = useContext(UserContext);
   const changeHandler = (e) => {
+    setWarnings('')
     setnewUserData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -70,10 +72,20 @@ export default function Login() {
       .post("/auth/login/", login)
       .then((loginResponse) => {
         console.log(loginResponse)
-        // localStorage.setItem("auth-token", loginResponse.data.token);
-        // setRealUser(loginResponse.data.user);
-
-        // history.push("/");
+        if(loginResponse.data=="Invalid")
+        {
+          setWarnings('Invalid Username/Password')
+        }
+        else if(loginResponse.data=="NoUser"){
+          setWarnings('User Not Found')
+        }
+        if(loginResponse.data.token)
+        {
+          
+        localStorage.setItem("auth-token", loginResponse.data.token);
+        setRealUser(loginResponse.data.user);
+        history.push("/");
+      }
       })
       .catch((error) => {
         console.log(error);
@@ -125,8 +137,10 @@ export default function Login() {
             className={classes.submit}
             onClick={submitUserLogin}
           >
+          
             Log in
           </Button>
+          <p>{Warnings}</p>
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/" variant="body2">
