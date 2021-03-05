@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import CSVReader from "react-csv-reader";
-
+import Preview from './Preview'
 
 export default function Import() {
     let [mydata, setmydata] = useState()
@@ -26,10 +26,14 @@ mydata.slice(0,3).map((x)=>{
   };
 
   return (
+    <React.Fragment>
     <CSVReader
       cssClass="react-csv-input"
       onFileLoaded={handleForce}
       parserOptions={papaparseOptions}
     />
+    {mydata?(<Preview mydata={mydata} />):null}
+  
+    </React.Fragment>
   );
 }

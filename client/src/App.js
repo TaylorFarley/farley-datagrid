@@ -51,23 +51,7 @@ function App() {
     };
 
     checkLoggedIn();
-    // setloading(true)
-    // let token = localStorage.getItem("auth-token");
-    // console.log(token)
-    // if(!token)
-    // setloading(false)    
     
-    // console.log('lets run this post')
-    // axios.post('/auth/tokenIsValid',
-    // null,
-    // { headers: { "x-auth-token": token } })
-    // .then((res)=>{
-    //  return console.log(res)
-    //   console.log('did anything come back')
-    //   setRealUser(res.data)
-    //   setloading(false)
-    //   console.log(realUser.email)
-    // })
 
   },[])
 
