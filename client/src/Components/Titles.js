@@ -57,15 +57,25 @@ const Titles = () => {
 
   const titleChange = (e)=>{
     e.preventDefault()
+  
+    if(e.target.value===''){axios.get("/data/dataGet").then((res) => {
+      setData(res.data);    
+    });}
+
+
+
     setTitle((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
     let newArr = [];
     data.map((currentElement, index) => { 
-      if(currentElement.title===e.target.value)
-      {newArr.push(currentElement)
-      setitup(newArr)}
+      // if(currentElement.title===e.target.value)
+      if (currentElement.title.indexOf(e.target.value) >= 0) 
+      { newArr.push(currentElement)
+        setitup(newArr)
+       }
+      // {newArr.push(currentElement)     
       else{
         console.log('not found')
       }
