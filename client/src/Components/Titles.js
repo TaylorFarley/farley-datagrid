@@ -19,15 +19,14 @@ const Titles = () => {
   const [data, setData] = useState();
   const [title, setTitle] = useState()
   const columns = [
-    textColumn({ title: "Title", key: "title" }),
+    textColumn({ title: "Title", key: "title", disabled:"true"}),
     textColumn({ title: "Log", key: "log" }),
     textColumn({ title: "Org", key: "org" }),
   ];
 
   useEffect(() => {
     axios.get("/data/dataGet").then((res) => {
-      setData(res.data);
-      console.log(res.data);
+      setData(res.data);   
     });
   }, []);
 
