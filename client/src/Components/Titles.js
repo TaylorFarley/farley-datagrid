@@ -2,9 +2,10 @@ import React, { useContext, useState, useEffect } from "react";
 import UserContext from "../Context/UserContext";
 import ReactDOM from "react-dom";
 import axios from "axios";
-
-import { makeStyles } from "@material-ui/core/styles";
+import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+
 import {
   DataSheetGrid,
   checkboxColumn,
@@ -16,7 +17,7 @@ const Titles = () => {
   const { realUser, setRealUser } = useContext(UserContext);
 
   const [data, setData] = useState();
-
+  const [title, setTitle] = useState()
   const columns = [
     textColumn({ title: "Title", key: "title" }),
     textColumn({ title: "Log", key: "log" }),
@@ -54,7 +55,28 @@ const Titles = () => {
     });
   };
 
+  const titleChange = (e)=>{
+    e.preventDefault()
+    setTitle((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+    let newArr = [];
+    data.map((currentElement, index) => { 
+      if(currentElement.title===e.target.value)
+      {newArr.push(currentElement)
+      setitup(newArr)}
+      else{
+        console.log('not found')
+      }
+     
+    }); 
+  }
+  const setitup = (newar)=>{
+    setData(newar);
+  }
 
+  
   return (
     <div>
       {realUser.email ? (
@@ -64,6 +86,7 @@ const Titles = () => {
           's Titles
         </h1>
       ) : null}
+       <TextField id="standard-basic" label="Sort Titles" name="title" onChange={titleChange} />
       <Button variant="contained" color="primary" onClick={ShowBlanks}>
         Show Nulls
       </Button>
