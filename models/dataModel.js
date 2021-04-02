@@ -1,12 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const dataSchema = new Schema({  
+const dataSchema = new Schema(
+  {
     title: String,
     log: String,
-    org: String
-});
+    org: String,
+  },
+  { timestamps: true }
+);
 
-const Data = mongoose.model('theData', dataSchema);
+const Data = mongoose.model("theData", dataSchema);
 
 module.exports = Data;
