@@ -81,7 +81,7 @@ router.post("/login", async (req, res) => {
     if (!isMatch) return res.send("Invalid");
     
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "5m",
+      expiresIn: "1h",
     });
    
     const userInfo = await User.findById(user._id);  
