@@ -1,21 +1,21 @@
 import React, { useCallback, useState } from "react";
 import CSVReader from "react-csv-reader";
-import Preview from './Preview'
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import SwipeableViews from 'react-swipeable-views';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Zoom from '@material-ui/core/Zoom';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import UpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { green } from '@material-ui/core/colors';
-import Box from '@material-ui/core/Box';
+import Preview from "./Preview";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import SwipeableViews from "react-swipeable-views";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Zoom from "@material-ui/core/Zoom";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import UpIcon from "@material-ui/icons/KeyboardArrowUp";
+import { green } from "@material-ui/core/colors";
+import Box from "@material-ui/core/Box";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,7 +43,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `action-tab-${index}`,
-    'aria-controls': `action-tabpanel-${index}`,
+    "aria-controls": `action-tabpanel-${index}`,
   };
 }
 
@@ -51,18 +51,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     width: "100%",
-    position: 'relative',
+    position: "relative",
     minHeight: 200,
   },
   fab: {
-    position: 'absolute',
+    position: "absolute",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
   fabGreen: {
     color: theme.palette.common.white,
     backgroundColor: green[500],
-    '&:hover': {
+    "&:hover": {
       backgroundColor: green[600],
     },
   },
@@ -72,11 +72,11 @@ export default function Import() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  let [mydata, setmydata] = useState()
+  let [mydata, setmydata] = useState();
   const handleForce = (data, fileInfo) => {
-    console.log(data, fileInfo)
-     setmydata(data)
-};
+    console.log(data, fileInfo);
+    setmydata(data);  
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -98,24 +98,39 @@ export default function Import() {
   };
   const fabs = [
     {
-      color: 'primary',
+      color: "primary",
       className: classes.fab,
       icon: <AddIcon />,
-      label: 'Add',
+      label: "Add",
     },
     {
-      color: 'secondary',
+      color: "secondary",
       className: classes.fab,
       icon: <EditIcon />,
-      label: 'Edit',
+      label: "Edit",
     },
     {
-      color: 'inherit',
+      color: "inherit",
       className: clsx(classes.fab, classes.fabGreen),
       icon: <UpIcon />,
-      label: 'Expand',
+      label: "Expand",
     },
   ];
+const showTemp= () =>{
+  console.log(mydata)
+}
+  const handleFile = (e) => {
+    const content = e.target.result;
+    const formatMe = JSON.parse(content)
+    setmydata(formatMe)
+    // You can set content in state and show it in render.
+  };
+
+  const handleChangeFile = (file) => {
+    let fileData = new FileReader();
+    fileData.onloadend = handleFile;
+    fileData.readAsText(file);
+  };
 
   return (
     <div className={classes.root}>
@@ -134,30 +149,36 @@ export default function Import() {
         </Tabs>
       </AppBar>
       <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-        <React.Fragment>
-    <CSVReader
-      cssClass="react-csv-input"
-      onFileLoaded={handleForce}
-      parserOptions={papaparseOptions}
-    />
-    {mydata?(<Preview mydata={mydata} />):null}
-  
-    </React.Fragment>
+          <React.Fragment>
+            <CSVReader
+              cssClass="react-csv-input"
+              onFileLoaded={handleForce}
+              parserOptions={papaparseOptions}
+            />
+            {mydata ? <Preview mydata={mydata} /> : null}
+          </React.Fragment>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
+          {/*json stuff */}
+         
+          <div>
+            <input
+              type="file"
+              accept=".json"
+              onChange={(e) => handleChangeFile(e.target.files[0])}
+            />
+          </div>
+          {mydata ? <Preview mydata={mydata} /> : null}
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           Item Three
         </TabPanel>
       </SwipeableViews>
- 
     </div>
   );
 }
-
