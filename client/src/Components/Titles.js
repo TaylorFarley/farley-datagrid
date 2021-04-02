@@ -95,11 +95,11 @@ const Titles = () => {
           's Titles
         </h1>
       ) : null}
-       <TextField id="standard-basic" label="Sort Titles" name="title" onChange={titleChange} />
-      <Button variant="contained" color="primary" onClick={ShowBlanks}>
+       <TextField id="standard-basic" label="Sort Titles" name="title" onChange={titleChange} style={{float: "left"}} />
+      <Button variant="contained" color="primary" onClick={ShowBlanks} style={{float: "right", marginLeft:"2em"}}>
         Show Nulls
       </Button>
-      <Button variant="contained" color="primary" onClick={ShowAll}>
+      <Button variant="contained" color="primary" onClick={ShowAll} style={{float: "right"}}>
         Show All
       </Button>
       <DataSheetGrid data={data} onChange={setData} columns={columns} />
