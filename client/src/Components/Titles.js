@@ -15,13 +15,16 @@ import "react-datasheet-grid/dist/index.css";
 
 const Titles = () => {
   const { realUser, setRealUser } = useContext(UserContext);
-
+const test = ()=>{
+  console.log('test')
+}
   const [data, setData] = useState();
   const [title, setTitle] = useState()
   const columns = [
     textColumn({ title: "Title", key: "title", disabled:"true"}),
     textColumn({ title: "Log", key: "log" }),
     textColumn({ title: "Org", key: "org" }),
+  
   ];
 
   useEffect(() => {

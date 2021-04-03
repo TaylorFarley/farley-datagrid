@@ -67,4 +67,23 @@ router.get("/dataGet", async(req, res) => {
     res.json(allData)
 })
 
+router.post("/update", async(req, res) => {
+  let newData = [{"title": "title1", "log":"999"},{"title": "lionking", "Log":"999"}]
+  newData.forEach((curEl, index)=>{
+    try {
+      Data.updateMany(
+         { "title" : curEl.title },
+         { $set: { "org" : "loop", "log" : "loop" } }
+        
+      ).then(()=>{console.log('updated')});
+   } catch (e) {
+      print(e);
+   }
+  res.send('done')
+  })
+  })
+  
+
+
+
 module.exports = router;
