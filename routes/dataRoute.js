@@ -76,20 +76,20 @@ router.post("/update", async (req, res) => {
   //bring in ssot store in new data, so wrap it in a promise?
   // .then the below use your saved to remember promise
   let getSSOT = async () => {
-    return new Promise((el) => {
-      const ND = DataSSOT.find();
-      el(ND);
-      console.log('hello1')
+    return new Promise((fulfilledPromise) => {
+      const SSOT_Data = DataSSOT.find();
+      fulfilledPromise(SSOT_Data);
+     
     });
   };
 
-  getSSOT().then((res) => {
+  getSSOT().then((SSOT_Titles) => {
   
-    res.forEach((curEl, index) => {
+    SSOT_Titles.forEach((currentSSOT_Title, index) => {
       try {
         Data.updateMany(
-          { title: curEl.title },
-          { $set: { org: curEl.org, log: curEl.log } }
+          { title: currentSSOT_Title.title },
+          { $set: { org: currentSSOT_Title.org, log: currentSSOT_Title.log } }
         )
           .collation({ locale: "en", strength: 2 })
           .then(() => {
